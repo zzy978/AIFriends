@@ -37,8 +37,8 @@ const user = useUserStore();
             <CreateIcon />
             创作
           </RouterLink>
-          <RouterLink v-if="!user.isLogin()" :to="{name: 'user-account-login-index'}" class="btn btn-ghost text-lg">登录</RouterLink>
-          <UserMenu v-else /> <!-- 用户已登录，显示用户菜单组件 -->
+          <RouterLink v-if="user.hasPulledUserInfo && !user.isLogin()" :to="{name: 'user-account-login-index'}" class="btn btn-ghost text-lg">登录</RouterLink>
+          <UserMenu v-else-if="user.isLogin()" /> <!-- 用户已登录，显示用户菜单组件 -->
         </div>
     </nav>
     <!-- Page content here -->
