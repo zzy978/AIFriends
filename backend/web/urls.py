@@ -3,11 +3,13 @@ from web.views.user.account.register import RegisterView
 from web.views.user.account.refresh_token import RefreshTokenView
 from web.views.user.account.logout import LogoutView
 from web.views.user.account.get_user_info import GetUserInfoView
+from web.views.user.profile.update import UpdateProfileView
 from web.views.index import index
 from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/user/profile/update/', UpdateProfileView.as_view(), name='update_profile'),
     path('api/user/account/login/', LoginView.as_view(), name='login'),
     path('api/user/account/register/', RegisterView.as_view(), name='register'),
     path('api/user/account/refresh_token/', RefreshTokenView.as_view(), name='refresh_token'),

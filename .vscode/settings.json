@@ -10,5 +10,12 @@
     },
     "emmet.includeLanguages": {
         "django-html": "html"
-    }
+    },
+    "python-envs.pythonProjects": [
+        {
+            "path": "backend/web/views/user/profile",
+            "envManager": "ms-python.python:conda",
+            "packageManager": "ms-python.python:conda"
+        }
+    ]
 }
