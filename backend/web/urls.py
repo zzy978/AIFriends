@@ -4,7 +4,7 @@ from web.views.user.account.refresh_token import RefreshTokenView
 from web.views.user.account.logout import LogoutView
 from web.views.user.account.get_user_info import GetUserInfoView
 from web.views.index import index
-from django.urls import path
+from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/user/account/refresh_token/', RefreshTokenView.as_view(), name='refresh_token'),
     path('api/user/account/logout/', LogoutView.as_view(), name='logout'),
     path('api/user/account/get_user_info/', GetUserInfoView.as_view(), name='get_user_info'),
+    re_path(r'^(?!media/|static/|assets/).*$', index)
 ]
