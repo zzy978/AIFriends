@@ -4,7 +4,7 @@ const route = useRoute();
 const router = useRouter();
 
 router.push({
-    name: 'homepage-index',
+    name: 'user-space-index',
 })
 </script>
 
