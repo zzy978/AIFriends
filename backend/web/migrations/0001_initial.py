@@ -5,6 +5,8 @@ import django.utils.timezone
 from django.conf import settings
 from django.db import migrations, models
 
+from web.models.user import photo_upload_path
+
 
 class Migration(migrations.Migration):
 
@@ -30,7 +32,7 @@ class Migration(migrations.Migration):
                 (
                     "photo",
                     models.ImageField(
-                        default="user/photos/default.png", upload_to="photo_upload_path"
+                        default="user/photos/default.png", upload_to=photo_upload_path
                     ),
                 ),
                 (

@@ -8,7 +8,7 @@ from django.utils.timezone import now
 from web.models.user import UserProfile
 
 class UpdateProfileView(APIView):
-    permission_clsasses = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         try:
             user = request.user
@@ -25,16 +25,19 @@ class UpdateProfileView(APIView):
                 return Response({
                     'result': '个人简介不能为空'
                 })
-            if username != user.username and User.objects.filter(user__username=username).exists():
+            # 校验新的用户名是否已经被其他用户占用
+            if username != user.username and User.objects.filter(username=username).exists():
                 return Response({
                     'result': '用户名已存在'
                 })
             if photo:
                 remove_old_photo(user_profile.photo)
-                user.profile.photo = photo
+                user_profile.photo = photo
             user_profile.profile = profile
             user_profile.update_time = now()
+            user.username = username
             user.save()
+            user_profile.save()
             return Response({
                 'result': 'success',
                 'user_id': user.id,
