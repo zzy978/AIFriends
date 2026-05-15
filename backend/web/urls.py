@@ -4,11 +4,19 @@ from web.views.user.account.refresh_token import RefreshTokenView
 from web.views.user.account.logout import LogoutView
 from web.views.user.account.get_user_info import GetUserInfoView
 from web.views.user.profile.update import UpdateProfileView
+from web.views.create.character.create import CreateCharacterView
+from web.views.create.character.get_single import Get_singleCharacterView
+from web.views.create.character.remove import RemoveCharacterView
+from web.views.create.character.update import UpdateCharacterView    
 from web.views.index import index
 from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/create/character/create/', CreateCharacterView.as_view()),
+    path('api/create/character/get_single', Get_singleCharacterView.as_view()),
+    path('api/create/character/remove', RemoveCharacterView.as_view()),
+    path('api/create/character/update', UpdateCharacterView.as_view()),
     path('api/user/profile/update/', UpdateProfileView.as_view(), name='update_profile'),
     path('api/user/account/login/', LoginView.as_view(), name='login'),
     path('api/user/account/register/', RegisterView.as_view(), name='register'),

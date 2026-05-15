@@ -16,6 +16,16 @@
             "path": "backend/web/views/user/profile",
             "envManager": "ms-python.python:conda",
             "packageManager": "ms-python.python:conda"
+        },
+        {
+            "path": "backend/web/views",
+            "envManager": "ms-python.python:conda",
+            "packageManager": "ms-python.python:conda"
+        },
+        {
+            "path": "backend/web/views/create",
+            "envManager": "ms-python.python:conda",
+            "packageManager": "ms-python.python:conda"
         }
     ]
 }
