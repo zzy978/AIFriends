@@ -16,6 +16,7 @@ class Get_singleCharacterView(APIView):
                     'name': character.name,
                     'profile': character.profile,
                     'photo': character.photo.url,
+                    'background_image': character.background_image.url,
                 }
             })
         except:

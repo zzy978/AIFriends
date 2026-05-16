@@ -55,7 +55,6 @@ async function handleCreate() {
             }
         }
         catch (error) {
-            console.log(error)
         }
     }
 }
