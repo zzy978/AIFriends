@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="flex flex-col items-center mb-12">
-        <UserInfoField />
+         <UserInfoField :userProfile="userProfile" />
         <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-9 mt-12 justify-items-center w-full px-9">
 
         </div>
