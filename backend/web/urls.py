@@ -8,12 +8,14 @@ from web.views.create.character.create import CreateCharacterView
 from web.views.create.character.get_single import Get_singleCharacterView
 from web.views.create.character.remove import RemoveCharacterView
 from web.views.create.character.update import UpdateCharacterView
-from web.views.create.character.get_list import GetlistCharacterView    
+from web.views.create.character.get_list import GetlistCharacterView
+from web.views.homepage.index import HomepageIndexView    
 from web.views.index import index
 from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/homepage/index/', HomepageIndexView.as_view()),
     path('api/create/character/get_list/', GetlistCharacterView.as_view()),
     path('api/create/character/create/', CreateCharacterView.as_view()),
     path('api/create/character/get_single/', Get_singleCharacterView.as_view()),
