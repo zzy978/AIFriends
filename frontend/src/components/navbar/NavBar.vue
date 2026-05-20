@@ -6,8 +6,26 @@ import HomepageIcon from './icons/HomepageIcon.vue';
 import MenuIcon from './icons/MenuIcon.vue';
 import SearchIcon from './icons/SearchIcon.vue';
 import UserMenu from './UserMenu.vue';
+import { ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 const user = useUserStore();
+const searchQuery = ref('');
+const router = useRouter()
+const route = useRoute()
+
+watch(() => route.query.q, newQ => {
+  searchQuery.value = newQ || ''
+})
+
+function handleSearch() {
+    router.push({
+      name: 'homepage-index',
+      query: {
+        q: searchQuery.value.trim(),
+      }
+    })
+}
 </script>
 
 <template>
@@ -23,13 +41,13 @@ const user = useUserStore();
             <div class="px-2 font-bold text-xl">AIFriends</div>
         </div>
         <div class="navbar-center w-4/5 max-w-180 flex justify-center">
-            <div class="join w-4/5 flex justify-center">
-                <input class="input join-item rounded-l-full w-4/5" placeholder="搜索你感兴趣的内容"/>
+            <form @submit.prevent="handleSearch" class="join w-4/5 flex justify-center">
+                <input v-model="searchQuery" class="input join-item rounded-l-full w-4/5" placeholder="搜索你感兴趣的内容"/>
                 <button class="btn join-item rounded-r-full gap-0">
                     <SearchIcon />
                     搜索
             </button>
-            </div>
+            </form>
         </div>
         <div class="navbar-end">
           <!-- <CreateIcon class="mr-1" /> -->
