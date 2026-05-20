@@ -10,11 +10,17 @@ from web.views.create.character.remove import RemoveCharacterView
 from web.views.create.character.update import UpdateCharacterView
 from web.views.create.character.get_list import GetlistCharacterView
 from web.views.homepage.index import HomepageIndexView    
+from web.views.friend.get_or_create import GetOrCreateFriendView
+from web.views.friend.get_list import GetListFriendView
+from web.views.friend.remove import RemoveFriendView
 from web.views.index import index
 from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/friend/get_or_create/', GetOrCreateFriendView.as_view()),
+    path('api/friend/get_list/', GetListFriendView.as_view()),
+    path('api/friend/remove/', RemoveFriendView.as_view()),
     path('api/homepage/index/', HomepageIndexView.as_view()),
     path('api/create/character/get_list/', GetlistCharacterView.as_view()),
     path('api/create/character/create/', CreateCharacterView.as_view()),
