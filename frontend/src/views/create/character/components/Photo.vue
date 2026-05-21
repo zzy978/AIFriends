@@ -1,6 +1,6 @@
 <script setup>
 import CameraIcon from '@/views/user/profile/components/icons/CameraIcon.vue';
-import { onBeforeMount, ref, useTemplateRef, watch } from 'vue';
+import { onBeforeMount, ref, useTemplateRef, watch, nextTick } from 'vue';
 import Croppie from 'croppie'
 import 'croppie/croppie.css'
 
