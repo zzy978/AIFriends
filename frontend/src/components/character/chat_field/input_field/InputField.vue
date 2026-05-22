@@ -5,6 +5,7 @@ import { useTemplateRef, ref } from 'vue';
 import streamApi from '@/js/http/streamApi';
 
 const inputRef = useTemplateRef('input-ref')
+const emits = defineEmits(['pushBackMessage', 'addToLastMessage'])
 const message = ref('')
 const props = defineProps(['friendID'])
 let isProcessing = false
@@ -21,6 +22,17 @@ async function handleSend() {
     if (!content) return
     message.value = ''
 
+    emits('pushBackMessage', {
+        role: 'user',
+        content: content,
+        id: crypto.randomUUID(),
+    })
+    emits('pushBackMessage', {
+        role: 'AI',
+        content: '',
+        id: crypto.randomUUID(),
+    })
+
     try {
         await streamApi('/api/friend/message/chat/', {
             body: {
@@ -31,7 +43,7 @@ async function handleSend() {
                 if (isDone) {
                     isProcessing = false
                 } else if (data.content) {
-                    console.log(data.content)
+                    emits('addToLastMessage', data.content)
                 }
             },
             onerror(error) {
@@ -39,7 +51,6 @@ async function handleSend() {
             }
         })
     } catch (error) {
-        console.log('发送消息失败', error)
         isProcessing = false
     }
 

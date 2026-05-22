@@ -14,11 +14,13 @@ from web.views.friend.get_or_create import GetOrCreateFriendView
 from web.views.friend.get_list import GetListFriendView
 from web.views.friend.remove import RemoveFriendView
 from web.views.friend.message.chat.chat import MessageChatView
+from web.views.friend.message.get_history import GetHistoryView
 from web.views.index import index
 from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/friend/message/get_history/', GetHistoryView.as_view()),
     path('api/friend/message/chat/', MessageChatView.as_view()),
     path('api/friend/get_or_create/', GetOrCreateFriendView.as_view()),
     path('api/friend/get_list/', GetListFriendView.as_view()),
