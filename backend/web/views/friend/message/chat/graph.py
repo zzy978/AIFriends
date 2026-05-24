@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import lancedb
 from langchain_openai import ChatOpenAI
 from typing import TypedDict, Sequence, Annotated
@@ -55,7 +53,6 @@ class ChatGraph:
             messages: Annotated[Sequence[BaseMessage], add_messages]
         
         def model_call(state: AgentState) -> AgentState:
-            pprint(state['messages'])
             res = llm.invoke(state['messages'])
             return {'messages': res}
         
