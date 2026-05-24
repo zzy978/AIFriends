@@ -14,6 +14,15 @@ function focus() {
     inputRef.value.focus()
 }
 
+function handleKeydown(e) {
+  // Enter发送
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+
+    handleSend()
+  }
+}
+
 async function handleSend() {
     if (isProcessing) return
     isProcessing = true
@@ -63,13 +72,14 @@ defineExpose({
 
 <template>
     <form @submit.prevent="handleSend" class="absolute bottom-4 left-2 h-12 w-86 flex items-center">
-        <input 
+        <textarea 
             ref="input-ref"
             v-model="message"
-            class="input bg-black/30 backdrop-blur-sm text-white text-base w-full h-full rounded-2xl pr-20"
-            type="text"
+            @keydown="handleKeydown"
+            rows="1"
+            class="bg-black/30 backdrop-blur-sm text-white text-base w-full rounded-2xl p-3 pr-20 resize-none outline-none leading-6"
             placeholder="文本输入..."
-        >
+        ></textarea>
         <div class="absolute right-2 w-8 h-8 flex justify-center items-center cursor-pointer">
             <SendIcon @click="handleSend" />
         </div>

@@ -88,7 +88,7 @@ class MessageChatView(APIView):
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,        
             )
-            if Message.objects.filter(friend=friend).count() % 1 == 0:
+            if Message.objects.filter(friend=friend).count() % 10 == 0:
                 update_memory(friend)
         
         response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
