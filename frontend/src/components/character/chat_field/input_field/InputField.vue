@@ -3,12 +3,14 @@ import SendIcon from '../../icons/SendIcon.vue';
 import MicIcon from '../../icons/MicIcon.vue';
 import { useTemplateRef, ref } from 'vue';
 import streamApi from '@/js/http/streamApi';
+import MicroPhone from './MicroPhone.vue';
 
 const inputRef = useTemplateRef('input-ref')
 const emits = defineEmits(['pushBackMessage', 'addToLastMessage'])
 const message = ref('')
 const props = defineProps(['friendID'])
-let isProcessing = false
+let processId = 0
+const showMic = ref(false)
 
 function focus() {
     inputRef.value.focus()
@@ -23,12 +25,17 @@ function handleKeydown(e) {
   }
 }
 
-async function handleSend() {
-    if (isProcessing) return
-    isProcessing = true
-
-    const content = message.value.trim()
+async function handleSend(event, audio_msg) {
+    let content
+    if (audio_msg) {
+        content = audio_msg.trim()
+    } else {
+        content = message.value.trim()
+    }
     if (!content) return
+
+    const curId = ++ processId
+
     message.value = ''
 
     emits('pushBackMessage', {
@@ -49,29 +56,35 @@ async function handleSend() {
                 message: content,
             },
             onmessage(data, isDone) {
-                if (isDone) {
-                    isProcessing = false
-                } else if (data.content) {
+                if (curId !== processId) return
+                if (data.content) {
                     emits('addToLastMessage', data.content)
                 }
             },
             onerror(error) {
-                isProcessing = false
             }
         })
     } catch (error) {
-        isProcessing = false
     }
 
 }
 
+function handleStop() {
+    ++ processId
+}
+
+function close() {
+    ++ processId
+    showMic.value = false
+}
+
 defineExpose({
-    focus,
+    focus, close
 })
 </script>
 
 <template>
-    <form @submit.prevent="handleSend" class="absolute bottom-4 left-2 h-12 w-86 flex items-center">
+    <form v-if="!showMic" @submit.prevent="handleSend" class="absolute bottom-4 left-2 h-12 w-86 flex items-center">
         <textarea 
             ref="input-ref"
             v-model="message"
@@ -83,10 +96,16 @@ defineExpose({
         <div class="absolute right-2 w-8 h-8 flex justify-center items-center cursor-pointer">
             <SendIcon @click="handleSend" />
         </div>
-        <div class="absolute right-10 w-8 h-8 flex justify-center items-center cursor-pointer">
+        <div @click="showMic = true" class="absolute right-10 w-8 h-8 flex justify-center items-center cursor-pointer">
             <MicIcon />
         </div>
     </form>
+    <MicroPhone 
+        v-else
+        @close="showMic = false"
+        @send="handleSend"
+        @stop="handleStop"
+    />
 </template>
 
 <style scoped>
