@@ -13,32 +13,39 @@ const startRecording = async () => {
   const baseUrl = "http://localhost:5173/vad/";
   try {
     vadInstance = await MicVAD.new({
-      baseAssetPath: baseUrl,
-      onSpeechStart: () => {
-        isSpeaking.value = true;
-        emit('stop')
-      },
-      onSpeechEnd: (audio) => {
-        isSpeaking.value = false;
-        const pcm16 = float32ToInt16(audio);
-        sendToBackend(pcm16);
-      },
-      // onFrameProcessed: (probs) => {
-      //   console.log('isSpeech:', probs.isSpeech)
-      // },
-      ortConfig: (ort) => {
-        ort.env.wasm.wasmPaths = baseUrl;
-        ort.env.logLevel = "error";
-      },
-      positiveSpeechThreshold: 0.3,
-      negativeSpeechThreshold: 0.25,
-      minSpeechFrames: 5,
-      redemptionFrames: 5,
+  baseAssetPath: baseUrl,
+
+  onSpeechStart: () => {
+    isSpeaking.value = true
+    emit('stop')
+  },
+
+  onSpeechEnd: (audio) => {
+    isSpeaking.value = false
+
+    const pcm16 = float32ToInt16(audio)
+    sendToBackend(pcm16)
+  },
+
+  onVADMisfire: () => {
+  },
+
+  ortConfig: (ort) => {
+    ort.env.wasm.wasmPaths = baseUrl
+    ort.env.logLevel = "error"
+  },
+
+  positiveSpeechThreshold: 0.8,
+  negativeSpeechThreshold: 0.65,
+
+  minSpeechFrames: 200,
+  redemptionFrames: 800,
+
+  submitUserSpeechOnPause: true,
     });
 
     await vadInstance.start();
   } catch (e) {
-    console.error("VAD 初始化失败:", e);
   }
 };
 // 将 Float32 转 PCM 16-bit
@@ -57,13 +64,12 @@ const sendToBackend = async (arrayBuffer) => {
   formData.append("audio", blob, 'voice.pcm')
 
   try {
-    const res = await api.post('', formData)
+    const res = await api.post('/api/friend/message/asr/asr/', formData)
     const data = res.data
     if (data.result === 'success') {
       emit('send', null, data.text)
     }
   } catch (error) {
-    console.error(error)
   }
 };
 
@@ -81,7 +87,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="absolute bottom-4 left-2 h-12 w-86 flex items-center bg-black/30 backdrop-blursm rounded-2xl">
+    <div class="absolute bottom-4 left-2 h-12 w-86 flex items-center bg-black/30 backdrop-blur-sm rounded-2xl">
         <div v-if="isSpeaking" class="flex items-center justify-center gap-1 h-6 flex-1">
             <div
                 v-for="i in 32" :key="i"

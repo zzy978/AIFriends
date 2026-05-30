@@ -1,3 +1,4 @@
+from web.views.friend.message.asr.asr import ASRView
 from web.views.user.account.login import LoginView
 from web.views.user.account.register import RegisterView
 from web.views.user.account.refresh_token import RefreshTokenView
@@ -20,6 +21,7 @@ from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/friend/message/asr/asr/', ASRView.as_view()),
     path('api/friend/message/get_history/', GetHistoryView.as_view()),
     path('api/friend/message/chat/', MessageChatView.as_view()),
     path('api/friend/get_or_create/', GetOrCreateFriendView.as_view()),
