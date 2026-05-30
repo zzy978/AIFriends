@@ -119,7 +119,7 @@ class MessageChatView(APIView):
     async def run_tts_tasks(self, app, inputs, mq):
         task_id = uuid.uuid4().hex
         api_key = os.getenv('API_KEY')
-        wss_url = os.getenv('WSS_URL')
+        wss_url = os.getenv("WSS_URL")
         headers = {
             "Authorization": f"Bearer {api_key}"
         }
