@@ -1,3 +1,4 @@
+from web.views.create.character.voice.get_list import GetVoiceListView
 from web.views.friend.message.asr.asr import ASRView
 from web.views.user.account.login import LoginView
 from web.views.user.account.register import RegisterView
@@ -21,6 +22,7 @@ from django.urls import path, re_path
 
 urlpatterns = [
     path('', index, name='index'),
+    path('api/create/character/voice/get_list/', GetVoiceListView.as_view()),
     path('api/friend/message/asr/asr/', ASRView.as_view()),
     path('api/friend/message/get_history/', GetHistoryView.as_view()),
     path('api/friend/message/chat/', MessageChatView.as_view()),
